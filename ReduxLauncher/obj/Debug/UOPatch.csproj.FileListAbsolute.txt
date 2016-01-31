@@ -1,0 +1,8 @@
+C:\Users\Admin\Documents\Redux-Launcher\ReduxLauncher\bin\Debug\UOPatch.exe.config
+C:\Users\Admin\Documents\Redux-Launcher\ReduxLauncher\bin\Debug\UOPatch.exe
+C:\Users\Admin\Documents\Redux-Launcher\ReduxLauncher\bin\Debug\UOPatch.pdb
+C:\Users\Admin\Documents\Redux-Launcher\ReduxLauncher\obj\Debug\ReduxLauncher.Modules.PatcherInterface.resources
+C:\Users\Admin\Documents\Redux-Launcher\ReduxLauncher\obj\Debug\UOPatch.Properties.Resources.resources
+C:\Users\Admin\Documents\Redux-Launcher\ReduxLauncher\obj\Debug\UOPatch.csproj.GenerateResource.Cache
+C:\Users\Admin\Documents\Redux-Launcher\ReduxLauncher\obj\Debug\UOPatch.exe
+C:\Users\Admin\Documents\Redux-Launcher\ReduxLauncher\obj\Debug\UOPatch.pdb
