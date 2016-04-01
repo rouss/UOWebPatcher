@@ -300,5 +300,15 @@ namespace ReduxLauncher.Modules
         {
             Process.GetCurrentProcess().Kill();
         }
+
+        private void UpdateText_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void file_name_lbl_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

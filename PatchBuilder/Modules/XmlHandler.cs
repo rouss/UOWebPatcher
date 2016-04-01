@@ -132,7 +132,7 @@ namespace PatchBuilder.Modules
                     xml.WriteAttributeString("Patch"     , PatchHelper.PatchURL);
                     xml.WriteAttributeString("Master"    , PatchHelper.MasterURL);
                     xml.WriteAttributeString("Version"   , PatchHelper.VersionURL);
-                    xml.WriteAttributeString("Background", PatchHelper.BackgroundURL);                  
+                    xml.WriteAttributeString("Background", PatchHelper.BackgroundURL);
 
                     xml.WriteEndElement();
                     xml.WriteEndDocument();

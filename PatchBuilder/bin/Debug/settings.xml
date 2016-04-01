@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<Patch-Settings Update="" Patch="https://data.uo-redux.com/patchsettings/patch.xml" Master="http://data.uo-redux.com/patchdata/" Version="https://data.uo-redux.com/patchdata/Version.txt" Background="https://data.uo-redux.com/patchsettings/reduxWhole.bmp" />
+<Patch-Settings Update="http://199.101.48.132/data/updates.txt" Patch="http://199.101.48.132/data/patch.xml" Master="http://199.101.48.132/data/client" Version="http://199.101.48.132/data/Version.txt" Background="http://199.101.48.132/data/reduxWhole.bmp" />

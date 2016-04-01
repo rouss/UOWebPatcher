@@ -99,6 +99,7 @@ namespace PatchBuilder.Modules
             {
                 using (StreamWriter writer = new StreamWriter(GlobalErrorLog, true))
                 {
+                    writer.WriteLine("@UNHANDLED@");
                     writer.WriteLine("[{0:G}] {1}", DateTime.Now, text);
                     writer.WriteLine("/!/\n");
                     writer.Flush(); writer.Close();

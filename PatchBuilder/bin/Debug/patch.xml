@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <Patch-Index>
 		<Patch Version="1.25.36">
-				<File Date="12/16/2015 9:32:04 PM" Name="AdjustHair.png" Location="https://www.uo-redux.com/screenshots/AdjustHair.png" Bytes="100,755" />
-				<File Date="12/16/2015 9:32:04 PM" Name="BeginPerk.png" Location="https://www.uo-redux.com/screenshots/BeginPerk.png" Bytes="123,785" />
-				<File Date="12/16/2015 9:32:04 PM" Name="ContextMenu.png" Location="https://www.uo-redux.com/screenshots/ContextMenu.png" Bytes="423,877" />
-				<File Date="12/16/2015 9:32:04 PM" Name="chat.png" Location="https://www.uo-redux.com/screenshots/chat.png" Bytes="40,941" />
-				<File Date="12/16/2015 9:32:04 PM" Name="essencevendor.png" Location="https://www.uo-redux.com/screenshots/essencevendor.png" Bytes="76,960" />
-				<File Date="12/16/2015 9:32:04 PM" Name="language.png" Location="https://www.uo-redux.com/screenshots/language.png" Bytes="78,084" />
-				<File Date="12/16/2015 9:32:04 PM" Name="market.png" Location="https://www.uo-redux.com/screenshots/market.png" Bytes="81,946" />
-				<File Date="12/16/2015 9:32:04 PM" Name="profiles.png" Location="https://www.uo-redux.com/screenshots/profiles.png" Bytes="252,347" />
-				<File Date="12/16/2015 9:32:04 PM" Name="raceability.png" Location="https://www.uo-redux.com/screenshots/raceability.png" Bytes="58,796" />
-				<File Date="12/16/2015 9:32:04 PM" Name="status-n-perks.png" Location="https://www.uo-redux.com/screenshots/status-n-perks.png" Bytes="157,499" />
-				<File Date="12/16/2015 9:32:04 PM" Name="traveltent2.png" Location="https://www.uo-redux.com/screenshots/traveltent2.png" Bytes="522,298" />
+				<File Date="3/4/2016 8:30:36 PM" Name="AdjustHair.png" Location="https://www.uo-redux.com/screenshots/AdjustHair.png" Bytes="100,755" />
+				<File Date="3/4/2016 8:30:36 PM" Name="BeginPerk.png" Location="https://www.uo-redux.com/screenshots/BeginPerk.png" Bytes="123,785" />
+				<File Date="3/4/2016 8:30:36 PM" Name="ContextMenu.png" Location="https://www.uo-redux.com/screenshots/ContextMenu.png" Bytes="423,877" />
+				<File Date="3/4/2016 8:30:36 PM" Name="chat.png" Location="https://www.uo-redux.com/screenshots/chat.png" Bytes="40,941" />
+				<File Date="3/4/2016 8:30:36 PM" Name="essencevendor.png" Location="https://www.uo-redux.com/screenshots/essencevendor.png" Bytes="76,960" />
+				<File Date="3/4/2016 8:30:36 PM" Name="language.png" Location="https://www.uo-redux.com/screenshots/language.png" Bytes="78,084" />
+				<File Date="3/4/2016 8:30:36 PM" Name="market.png" Location="https://www.uo-redux.com/screenshots/market.png" Bytes="81,946" />
+				<File Date="3/4/2016 8:30:36 PM" Name="profiles.png" Location="https://www.uo-redux.com/screenshots/profiles.png" Bytes="252,347" />
+				<File Date="3/4/2016 8:30:36 PM" Name="raceability.png" Location="https://www.uo-redux.com/screenshots/raceability.png" Bytes="58,796" />
+				<File Date="3/4/2016 8:30:36 PM" Name="status-n-perks.png" Location="https://www.uo-redux.com/screenshots/status-n-perks.png" Bytes="157,499" />
+				<File Date="3/4/2016 8:30:36 PM" Name="traveltent2.png" Location="https://www.uo-redux.com/screenshots/traveltent2.png" Bytes="522,298" />
 		</Patch>
 		<Patch Version="1.25.37">
-				<File Date="12/16/2015 9:32:04 PM" Name="reduxWhole.bmp" Location="https://www.uo-redux.com/assets/images/reduxWhole.bmp" Bytes="450,056" />
-				<File Date="12/16/2015 9:32:04 PM" Name="patch.xml" Location="https://www.uo-redux.com/patch.xml" Bytes="-1" />
+				<File Date="3/4/2016 8:30:36 PM" Name="reduxWhole.bmp" Location="https://www.uo-redux.com/assets/images/reduxWhole.bmp" Bytes="450,056" />
+				<File Date="3/4/2016 8:30:36 PM" Name="patch.xml" Location="https://www.uo-redux.com/patch.xml" Bytes="-1" />
 		</Patch>
 		<Patch Version="1.25.38">
-				<File Date="12/16/2015 9:32:04 PM" Name="Version.txt" Location="https://www.uo-redux.com/data/Version.txt" Bytes="9" />
+				<File Date="3/4/2016 8:30:36 PM" Name="Version.txt" Location="https://www.uo-redux.com/data/Version.txt" Bytes="9" />
 		</Patch>
 </Patch-Index>

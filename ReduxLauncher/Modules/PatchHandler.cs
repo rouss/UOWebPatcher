@@ -10,12 +10,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Forms;
 
 namespace ReduxLauncher.Modules
 {
 
     internal class PatchHandler
     {
+        internal static string m_DestinationFolder = null;
         internal static string MasterUrl  { get   { return PatchData.MasterURL;  } }
         internal static string VersionUrl { get   { return PatchData.VersionURL; } }
         internal static string PatchUrl   { get   { return PatchData.PatchURL;   } }
@@ -73,6 +75,60 @@ namespace ReduxLauncher.Modules
                 {
                     UI.ReadyLaunch();
                     isReady = true;
+                }
+            }
+        }
+
+        private void GetPath()
+        {
+            FilePathParser parser = new FilePathParser();
+            Thread thread = new Thread(parser.GetFilePath);
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+        }
+
+        private void PopulateRazorFolder()
+        {
+            FilePathParser parser = new FilePathParser();
+            Thread thread = new Thread(parser.PopulateRazorLocation);
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+        }
+
+
+        private class FilePathParser
+        {
+            internal void GetFilePath()
+            {
+                FolderBrowserDialog dialog = new FolderBrowserDialog();
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        m_DestinationFolder = dialog.SelectedPath;
+                        
+                    }
+                    catch (Exception e)
+                    {
+                        LogHandler.LogErrors(e.ToString());
+                    }
+                }
+            }
+
+            internal void PopulateRazorLocation()
+            {
+                FolderBrowserDialog dialog = new FolderBrowserDialog();
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        m_RazorLocation = dialog.SelectedPath;
+
+                    }
+                    catch (Exception e)
+                    {
+                        LogHandler.LogErrors(e.ToString());
+                    }
                 }
             }
         }
@@ -175,6 +231,25 @@ namespace ReduxLauncher.Modules
             return settingsLocation;
         }
 
+        internal static string RazorLocation()
+        {
+            string settingsLocation = null;
+
+            try
+            {
+                if (File.Exists("razor.cfg"))
+                {
+                    using (FileStream file = new FileStream
+                        ("razor.cfg", FileMode.Open, FileAccess.Read, FileShare.Read))
+                    using (StreamReader reader = new StreamReader(file))
+                        settingsLocation = (string)(reader.ReadLine().Trim().ToLower());
+                }
+            }
+
+            catch (Exception e) { LogHandler.LogErrors(e.ToString()); }
+
+            return settingsLocation;
+        }
         /// <summary>
         /// Generates new local directory object based on path of the .exe
         /// </summary>
@@ -182,9 +257,7 @@ namespace ReduxLauncher.Modules
         {
             try
             {
-                string localPath = new FileInfo
-                    (System.Reflection.Assembly.GetEntryAssembly().Location).Directory.ToString();
-
+                string localPath = m_DestinationFolder;
                 localDirectory = new LocalDirectory(localPath, this);
             }
 
@@ -217,7 +290,7 @@ namespace ReduxLauncher.Modules
             {
                 for (int i = 0; i < index.Length; i++)
                 {
-                    directory.AddressIndex.Add(directory.URL + index[i]);
+                    directory.AddressIndex.Add((directory.URL + "/" + index[i]));
                     directory.NameIndex.Add(index[i]);
 
                     UI.UpdateProgressBar();
@@ -332,7 +405,7 @@ namespace ReduxLauncher.Modules
         {
             try
             {
-                string path = address.Substring(MasterUrl.Length);
+                string path = address.Substring(MasterUrl.Length + 1);
 
                 if (path.Contains('/'))
                 {
@@ -345,9 +418,9 @@ namespace ReduxLauncher.Modules
 
                     else
                         for (int i = 0; i < splitPath.Length - 1; i++)
-                            tempLength += splitPath[i].Length;
+                            tempLength += splitPath[i].Length +1;
 
-                    string folderName = path.Substring(0, tempLength +1);
+                    string folderName = path.Substring(0, tempLength -1);
 
                     QueryDirectory(folderName);
                 }
@@ -355,11 +428,12 @@ namespace ReduxLauncher.Modules
                 UI.UpdatePatchNotes(string.Format("Downloading File ({0}): " +
                     (address.Remove(address.IndexOf(directory.URL), directory.URL.Length)), filesDownloaded));
 
-                string temp_name = address.Remove(address.IndexOf(directory.URL), directory.URL.Length);
+                string temp_name = address.Remove(address.IndexOf(directory.URL), directory.URL.Length + 1);
 
                 UI.UpdateFileName(temp_name, 0, 0);
 
-                await m_WebClient.DownloadFileTaskAsync(new Uri(address), path);
+                if(InitialDownload() && !File.Exists(path))
+                    await m_WebClient.DownloadFileTaskAsync(new Uri(address), path);
 
                 directory.NameIndex.RemoveAt(0); directory.AddressIndex.RemoveAt(0);
             }
@@ -418,6 +492,84 @@ namespace ReduxLauncher.Modules
                 request.KeepAlive = true;
 
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                bool endMet = false;
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    List<string> fileLocations = new List<string>(); string line;
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        while (!endMet)
+                        {
+                            line = reader.ReadLine();
+                            if (line != null && line != "" && line.IndexOf("</a>") >= 0)
+                            //if (line != null && line != "" && line.Contains("</A>"))
+                            {
+                                if (line.Contains("</html>")) endMet = true;
+                                string[] segments = line.Replace("\\", "").Split('\"');
+                                List<string> paths = new List<string>();
+                                List<string> files = new List<string>();
+                                for (int i = 0; i < segments.Length; i++)
+                                {
+                                    if (!segments[i].Contains('<'))
+                                        paths.Add(segments[i]);
+                                }
+
+                                paths.RemoveAt(0);
+
+                                foreach (String s in paths)
+                                {
+                                    string[] secondarySegments = s.Split('/');
+                                    if (s.Contains(".") || s.Contains("Verinfo"))
+                                        files.Add(secondarySegments[secondarySegments.Length - 1]);
+                                    else
+                                    {
+                                        directory.SubDirectories.Add(new WebDirectory
+                                            (url + "/" + secondarySegments[secondarySegments.Length - 2], this));
+                                        UI.UpdatePatchNotes("Web Directory Found: " + secondarySegments[secondarySegments.Length - 2]);
+                                    }
+
+                                }
+
+                                foreach (String s in files)
+                                {
+                                    if (!String.IsNullOrEmpty(s) && !s.Contains('%'))
+                                    {
+                                        fileLocations.Add(s);
+                                        UI.UpdatePatchNotes("Web File Found: " + s);
+
+                                        UI.UpdateProgressBar();
+                                    }
+                                }
+
+                                if (line.Contains("</pre")) break;
+                            }
+                        }
+                    }
+
+                    response.Dispose(); /// After ((line = reader.ReadLine()) != null)
+                    return fileLocations.ToArray<string>();
+                }
+
+                else return new string[0]; /// !(HttpStatusCode.OK)
+            }
+
+            catch (Exception e)
+            {
+                LogHandler.LogErrors(e.ToString(), this);
+                LogHandler.LogErrors(url, this);
+                return null;
+            }
+        }
+
+        internal string[] ParseFolderIndex_Alpha(string url, WebDirectory directory)
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Timeout = 3 * 60 * 1000;
+                request.KeepAlive = true;
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
@@ -449,7 +601,7 @@ namespace ReduxLauncher.Modules
                                     }
                                 }
                             }
-                                else if (line.Contains("</pre")) break;
+                            else if (line.Contains("</pre")) break;
                         }
                     }
 
@@ -468,6 +620,7 @@ namespace ReduxLauncher.Modules
             }
         }
 
+        static string m_RazorLocation = null;
         internal void LaunchClient()
         {
             try
@@ -477,10 +630,30 @@ namespace ReduxLauncher.Modules
 
                 if (UI.UseRazor)
                 {
-                    Process client = new Process();
-                    client.StartInfo = new ProcessStartInfo(localPath + "/Razor/Razor.exe");
+                    if (RazorLocation() != null)
+                    {
+                        Process client = new Process();
+                        if (RazorLocation() != null) m_RazorLocation = RazorLocation();
+                        client.StartInfo = new ProcessStartInfo(m_RazorLocation + "Razor.exe");
 
-                    client.Start();
+                        client.Start();
+                    }
+
+                    else
+                    {
+                        PopulateRazorFolder();
+                        using (StreamWriter writer =
+                            new StreamWriter("razor.cfg", true))
+                        {
+                            writer.WriteLine(m_RazorLocation);
+                        }
+
+                        Process client = new Process();
+                        if (RazorLocation() != null) m_RazorLocation = RazorLocation();
+                        client.StartInfo = new ProcessStartInfo(m_RazorLocation + "Razor.exe");
+
+                        client.Start();
+                    }
                 }
 
                 else
